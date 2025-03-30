@@ -13,7 +13,7 @@ class Solution {
           // 如果已經到達字串末尾，返回 0
           if (i >= s.length()) return 0;
   
-          // 檢查正負號
+          /* 檢查正負號 */
           if (s[i] == '-' || s[i] == '+') {
               sign = (s[i] == '-') ? -1 : 1;
               i++;
