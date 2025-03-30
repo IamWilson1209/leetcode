@@ -47,9 +47,9 @@ class Node {
           // 如果超過容量 cap：移除最近最少使用的節點（oldest->next）
           if (cache.size() > cap) {
               Node* lru = oldest->next;
-              remove(lru);
-              cache.erase(lru->key); // erase!
-              delete lru;
+              remove(lru); // 從記憶體鑑表移除
+              cache.erase(lru->key); // 從map移除
+              delete lru; // 刪除記憶體位址
           }
       }
   
