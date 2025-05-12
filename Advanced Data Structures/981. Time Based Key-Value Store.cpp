@@ -2,6 +2,7 @@ class TimeMap {
   private:
       // 使用 map（而不是 unordered_map）作為內層容器
       // 是因為它會自動按時間升序排序
+      // 因為需要考慮順序性所以用map
       unordered_map<string, map<int, string>> tmap;
   public:
       TimeMap() {

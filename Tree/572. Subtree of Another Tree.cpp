@@ -17,9 +17,9 @@ class Solution {
               1. root cannot be null
               2. subRoot can be null
           */
-          if (subRoot == nullptr) {
-              return true;
-          }
+        //   if (subRoot == nullptr) {
+        //       return true;
+        //   }
           if (root == nullptr) {
               return false;
           }
