@@ -1,43 +1,55 @@
-class Solution(object):
-    def orangesRotting(self, grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
-        dirs = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+class Solution {
+private:
+    vector<vector<int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        // dfs不適合，嘗試bfs
+        int rows = grid.size();
+        int cols = grid[0].size();
+        queue<pair<int, int>> q; // 儲存腐爛橘子的座標
+        int freshCount = 0;      // 統計新鮮橘子數量
+        int minute = 0;          // 記錄時間
 
-        rows = len(grid)
-        cols = len(grid[0])
-        minutes = 0
+        // 找到所有腐爛橘子並統計新鮮橘子
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    q.push({i, j});
+                } else if (grid[i][j] == 1) {
+                    freshCount++;
+                }
+            }
+        }
 
-        q = deque()
-        fresh_count = 0
-        for i in range (rows):
-            for j in range(cols):
-                if grid[i][j] == 2:
-                    q.append((i, j))
-                elif grid[i][j] == 1:
-                    fresh_count += 1
-        
-        while q:
-            size = len(q)
-            has_rotten = False
+        // 如果沒有新鮮橘子，直接返回 0
+        if (freshCount == 0) return 0;
 
-            for _ in range(size):
-                row, col = q.popleft()
+        while (!q.empty()) {
+            int size = q.size(); // 當前範圍的腐爛橘子數量
+            bool hasRotten = false; // 是否有新橘子腐爛
 
-                for dx, dy in dirs:
-                    new_row, new_col = row + dx, col + dy
+            for (int i = 0; i < size; i++) {
+                auto [row, col] = q.front();
+                q.pop();
 
-                    if 0 <= new_row < rows and 0 <= new_col < cols and grid[new_row][new_col] == 1:
-                        grid[new_row][new_col] = 2
-                        q.append((new_row, new_col))
-                        fresh_count -= 1
-                        has_rotten = True
+                for (auto dir : dirs) {
+                    int newRow = row + dir[0];
+                    int newCol = col + dir[1];
 
-            if has_rotten:
-                minutes += 1
+                    if (newRow >= 0 && newRow < rows &&
+                        newCol >= 0 && newCol < cols &&
+                        grid[newRow][newCol] == 1) {
+                            grid[newRow][newCol] = 2; // 標記為腐爛
+                            q.push({newRow, newCol}); // 加入下一層
+                            freshCount--;
+                            hasRotten = true;
+                        }
+                }
+            }
+            // 如果這一輪有橘子腐爛，時間增加
+            if (hasRotten) minute++;
+        }
 
-        if fresh_count > 0:
-            return -1
-        return minutes
+        return freshCount == 0 ? minute : -1;
+    }
+};
